@@ -36,6 +36,31 @@ export function levelOrder(root, func) {
   }
 }
 
+export function inOrder(node, func) {
+  if (node === null) {
+    if (func === undefined) {
+      return [];
+    } else {
+      return null;
+    }
+  }
+
+  if (func !== undefined) {
+    inOrder(node.left, func);
+    func(node);
+    inOrder(node.right, func);
+  } else {
+    let array = [];
+    let tmp;
+    tmp = inOrder(node.left);
+    array = array.concat(tmp);
+    array = array.concat(node.data);
+    tmp = inOrder(node.right);
+    array = array.concat(tmp);
+    return array;
+  }
+}
+
 export function preOrder(node, func) {
   if (node === null) {
     if (func === undefined) {
