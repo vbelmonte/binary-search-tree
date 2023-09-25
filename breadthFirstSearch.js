@@ -81,3 +81,28 @@ export function preOrder(node, func) {
     return array;
   }
 }
+
+export function postOrder(node, func) {
+  if (node === null) {
+    if (func === undefined) {
+      return [];
+    } else {
+      return null;
+    }
+  }
+
+  if (func !== undefined) {
+    postOrder(node.left, func);
+    postOrder(node.right, func);
+    func(node);
+  } else {
+    let array = [];
+    let tmp;
+    tmp = postOrder(node.left);
+    array = array.concat(tmp);
+    tmp = postOrder(node.right);
+    array = array.concat(tmp);
+    array = array.concat(node.data);
+    return array;
+  }
+}
