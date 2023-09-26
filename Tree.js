@@ -1,5 +1,6 @@
 import { mergeSort } from "./mergeSort.js";
 import { arrayToBST } from "./arrayToBST.js";
+import { preOrder } from "./breadthFirstSearch.js";
 
 export class Tree {
   constructor(array) {
@@ -28,5 +29,32 @@ export class Tree {
     const root = arrayToBST(sortedArray);
 
     return root;
+  }
+
+  find(value) {
+    const array = preOrder(this.root);
+    for (let i = 0; i < array.length; i += 1) {
+      if (value === array[i].data) {
+        return array[i];
+      }
+    }
+    return 'Value not found!';
+  }
+
+  height(node) {
+    if (node === null) {
+      return -1;
+    }
+    
+    let heightLeft;
+    let heightRight;
+    heightLeft = 1 + this.height(node.left);
+    heightRight = 1 + this.height(node.right);
+
+    if (heightLeft >= heightRight) {
+      return heightLeft;
+    } else {
+      return heightRight;
+    }
   }
 }
