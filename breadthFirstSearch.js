@@ -15,7 +15,7 @@ export function levelOrder(root, func) {
       if (node.right !== null) {
         queue.push(node.right);
       }
-      func(queue.shift().data);
+      func(queue.shift());
     }
   } else {
     let queue = [];
@@ -30,7 +30,7 @@ export function levelOrder(root, func) {
       if (node.right !== null) {
         queue.push(node.right);
       }
-      finalOrder.push(queue.shift().data);
+      finalOrder.push(queue.shift());
     }
     return finalOrder;
   }
@@ -54,7 +54,7 @@ export function inOrder(node, func) {
     let tmp;
     tmp = inOrder(node.left);
     array = array.concat(tmp);
-    array = array.concat(node.data);
+    array = array.concat(node);
     tmp = inOrder(node.right);
     array = array.concat(tmp);
     return array;
@@ -75,7 +75,7 @@ export function preOrder(node, func) {
     preOrder(node.left, func);
     preOrder(node.right, func);
   } else {
-    let array = [node.data];
+    let array = [node];
     array = array.concat(preOrder(node.left));
     array = array.concat(preOrder(node.right));
     return array;
@@ -102,7 +102,7 @@ export function postOrder(node, func) {
     array = array.concat(tmp);
     tmp = postOrder(node.right);
     array = array.concat(tmp);
-    array = array.concat(node.data);
+    array = array.concat(node);
     return array;
   }
 }
