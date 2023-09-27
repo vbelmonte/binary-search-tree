@@ -57,4 +57,36 @@ export class Tree {
       return heightRight;
     }
   }
+
+  depth(node) {
+    let currentNode = this.root;
+    let depth = 0;
+
+    while(node !== currentNode.data) {
+      if (node > currentNode.data) {
+        currentNode = currentNode.right;
+      } else {
+        currentNode = currentNode.left;
+      }
+
+      if (currentNode === null) {
+        return 'Node not found in tree!';
+      }
+      depth++;
+    }
+
+    return depth;
+  }
+
+  isBalanced() {
+    const leftSubTree = this.height(this.root.left) + 1;
+    const rightSubTree = this.height(this.root.right) + 1;
+    const difference = Math.abs(leftSubTree - rightSubTree);
+
+    if (difference >= 0 && difference <= 1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
