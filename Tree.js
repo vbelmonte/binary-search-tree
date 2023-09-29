@@ -31,6 +31,24 @@ export class Tree {
     return root;
   }
 
+  insert(value) {
+    let newArray = this.array;
+    newArray.push(value);
+    this.root = buildTree(newArray);
+  }
+
+  delete(value) {
+    const index = this.array.indexOf(value);
+    
+    if (index > -1) {
+      this.array.splice(index, 1);
+    } else {
+      return 'Value not found!';
+    }
+
+    this.root = this.buildTree(this.array);
+  }
+
   find(value) {
     const array = preOrder(this.root);
     for (let i = 0; i < array.length; i += 1) {
@@ -88,5 +106,9 @@ export class Tree {
     } else {
       return false;
     }
+  }
+
+  reBalance(array) {
+    return this.buildTree(array);
   }
 }
