@@ -1,6 +1,7 @@
 import { mergeSort } from "./mergeSort.js";
 import { arrayToBST } from "./arrayToBST.js";
 import { preOrder } from "./breadthFirstSearch.js";
+import { Node } from "./Node.js";
 
 export class Tree {
   constructor(array) {
@@ -34,7 +35,28 @@ export class Tree {
   insert(value) {
     let newArray = this.array;
     newArray.push(value);
-    this.root = buildTree(newArray);
+    
+    let tmp = this.root;
+    
+    while(tmp !== null) {
+      if (value <= tmp.data) { 
+        if (tmp.left !== null) {
+          tmp = tmp.left;
+        } else {
+          let node = new Node(value, null, null);
+          tmp.left = node;
+          break;
+        }
+      } else {
+        if (tmp.right !== null) {
+          tmp = tmp.right;
+        } else {
+          let node = new Node(value, null, null);
+          tmp.right = node;
+          break;
+        }
+      }
+    }
   }
 
   delete(value) {
