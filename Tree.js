@@ -73,10 +73,8 @@ export class Tree {
 
     // find the node with the value you want to delete
     while(currentNode !== null) {
-      /*console.log('checking if currentNode data is the one we need');*/
       if (currentNode.data === value) {
-        console.log('found the node to delete');
-        console.log(currentNode.data);
+
         // CASE 1: deleting currentNode that is a leaf node
         if (currentNode.left === null && currentNode.right === null) {
           if (currentNode.data < parentNode.data) {
@@ -138,7 +136,6 @@ export class Tree {
 
         // CASE 4: deleting currentNode that has left and right children and isn't the root
         else {
-          console.log('currentNode has left and right children and is not a root');
           let smallestNode = currentNode.right;
           let parentOfSmallestNode = currentNode;
 
@@ -148,8 +145,6 @@ export class Tree {
           }
           // Subcase 1: smallestNode is a leaf node
           if (smallestNode.left === null && smallestNode.right === null) {
-            console.log('smallest node is a leaf node');
-            console.log(smallestNode.data);
             smallestNode.left = currentNode.left;
             if (smallestNode !== currentNode.right) {
               smallestNode.right = currentNode.right;
@@ -203,12 +198,10 @@ export class Tree {
       }
 
       if (currentNode === null) {
-        console.log('Value '+ value + ' not found in the tree!');
         return 'Value not found in the tree!';
       }
     }
 
-    console.log('We found the value you are looking for: ' + currentNode.data);
     return currentNode;
   }
 
