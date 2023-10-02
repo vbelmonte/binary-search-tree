@@ -193,13 +193,23 @@ export class Tree {
   }
 
   find(value) {
-    const array = preOrder(this.root);
-    for (let i = 0; i < array.length; i += 1) {
-      if (value === array[i].data) {
-        return array[i];
+    let currentNode = this.root;
+
+    while (value !== currentNode.data) {
+      if (value > currentNode.data) {
+        currentNode = currentNode.right;
+      } else {
+        currentNode = currentNode.left;
+      }
+
+      if (currentNode === null) {
+        console.log('Value '+ value + ' not found in the tree!');
+        return 'Value not found in the tree!';
       }
     }
-    return 'Value not found!';
+
+    console.log('We found the value you are looking for: ' + currentNode.data);
+    return currentNode;
   }
 
   height(node) {
