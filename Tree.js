@@ -261,7 +261,8 @@ export class Tree {
     }
   }
 
-  reBalance(array) {
-    return this.buildTree(array);
+  reBalance() {
+    this.root = this.buildTree(this.array);
+    return this.root;
   }
 }
