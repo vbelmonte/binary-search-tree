@@ -1,6 +1,7 @@
 import { mergeSort } from "./mergeSort.js";
 import { arrayToBST } from "./arrayToBST.js";
 import { preOrder } from "./breadthFirstSearch.js";
+import { Node } from "./Node.js";
 
 export class Tree {
   constructor(array) {
@@ -34,7 +35,28 @@ export class Tree {
   insert(value) {
     let newArray = this.array;
     newArray.push(value);
-    this.root = buildTree(newArray);
+    
+    let tmp = this.root;
+    
+    while(tmp !== null) {
+      if (value <= tmp.data) { 
+        if (tmp.left !== null) {
+          tmp = tmp.left;
+        } else {
+          let node = new Node(value, null, null);
+          tmp.left = node;
+          break;
+        }
+      } else {
+        if (tmp.right !== null) {
+          tmp = tmp.right;
+        } else {
+          let node = new Node(value, null, null);
+          tmp.right = node;
+          break;
+        }
+      }
+    }
   }
 
   delete(value) {
@@ -46,17 +68,141 @@ export class Tree {
       return 'Value not found!';
     }
 
-    this.root = this.buildTree(this.array);
+    let currentNode = this.root;
+    let parentNode;
+
+    // find the node with the value you want to delete
+    while(currentNode !== null) {
+      if (currentNode.data === value) {
+
+        // CASE 1: deleting currentNode that is a leaf node
+        if (currentNode.left === null && currentNode.right === null) {
+          if (currentNode.data < parentNode.data) {
+            parentNode.left = null;
+            break;
+          } else {
+            parentNode.right = null;
+            break;
+          }
+        }
+
+        // CASE 2: deleting a root node
+        if (currentNode === this.root) {
+          let smallestNode = currentNode.right;
+          let parentOfSmallestNode = currentNode;
+
+          while (smallestNode.left !== null) {
+            parentOfSmallestNode = smallestNode;
+            smallestNode = smallestNode.left;
+          }
+          // Subcase 1: smallestNode is a leaf node
+          if (smallestNode.left === null && smallestNode.right === null) {
+            smallestNode.left = currentNode.left;
+            smallestNode.right = currentNode.right;
+            parentOfSmallestNode.left = null;
+            currentNode.left = null;
+            currentNode.right = null;
+            this.root = smallestNode;
+            break;
+          }
+          // Subcase 2: smallestNode is not a leaf node
+          else {
+            smallestNode.left = currentNode.left;
+            currentNode.left = null;
+            currentNode.right = null;
+            this.root = smallestNode;
+            break;
+          }
+        }
+
+        // CASE 3: deleting currentNode that has one child
+        // Subcase 1: currentNode does not have a left child
+        else if (currentNode.left === null) {
+          if (currentNode.data < parentNode.data) {
+            parentNode.left = currentNode.right;
+          } else {
+            parentNode.right = currentNode.right;
+          }
+          break;
+        // Subcase 2: node does not have a right child
+        } else if (currentNode.right === null) {
+          if (currentNode.data < parentNode.data) {
+            parentNode.left = currentNode.left;
+          } else {
+            parentNode.right = currentNode.left;
+          }
+          break;
+        }
+
+        // CASE 4: deleting currentNode that has left and right children and isn't the root
+        else {
+          let smallestNode = currentNode.right;
+          let parentOfSmallestNode = currentNode;
+
+          while (smallestNode.left !== null) {
+            parentOfSmallestNode = smallestNode;
+            smallestNode = smallestNode.left;
+          }
+          // Subcase 1: smallestNode is a leaf node
+          if (smallestNode.left === null && smallestNode.right === null) {
+            smallestNode.left = currentNode.left;
+            if (smallestNode !== currentNode.right) {
+              smallestNode.right = currentNode.right;
+            } else {
+              smallestNode.right = null;
+            }
+            parentOfSmallestNode.left = null;
+            currentNode.left = null;
+            currentNode.right = null;
+            if (smallestNode.data < parentNode.data) {
+              parentNode.left = smallestNode;
+            } else {
+              parentNode.right = smallestNode;
+            }
+            break;
+          }
+          // Subcase 2: smallestNode is not a leaf node
+          else {
+            smallestNode.left = currentNode.left;
+            currentNode.left = null;
+            currentNode.right = null;
+            if (smallestNode.data < parentNode.data) {
+              parentNode.left = smallestNode;
+            } else {
+              parentNode.right = smallestNode;
+            }
+            break;
+          }
+        }
+
+      } else {
+        if (value < currentNode.data) {
+          parentNode = currentNode;
+          currentNode = currentNode.left;
+        } else {
+          parentNode = currentNode;
+          currentNode = currentNode.right;
+        }
+      }
+    }
   }
 
   find(value) {
-    const array = preOrder(this.root);
-    for (let i = 0; i < array.length; i += 1) {
-      if (value === array[i].data) {
-        return array[i];
+    let currentNode = this.root;
+
+    while (value !== currentNode.data) {
+      if (value > currentNode.data) {
+        currentNode = currentNode.right;
+      } else {
+        currentNode = currentNode.left;
+      }
+
+      if (currentNode === null) {
+        return 'Value not found in the tree!';
       }
     }
-    return 'Value not found!';
+
+    return currentNode;
   }
 
   height(node) {
@@ -108,7 +254,8 @@ export class Tree {
     }
   }
 
-  reBalance(array) {
-    return this.buildTree(array);
+  reBalance() {
+    this.root = this.buildTree(this.array);
+    return this.root;
   }
 }
